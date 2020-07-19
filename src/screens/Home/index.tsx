@@ -30,8 +30,6 @@ interface Place {
   opening_hours: {
     open_now: boolean;
   };
-  types: string[];
-  vicinity: string;
 }
 
 const Home: React.FC = () => {
@@ -87,8 +85,8 @@ const Home: React.FC = () => {
     }, 10000);
   }
 
-  function handleNavigateToDetail(id: string) {
-    navigation.navigate("Detail", { place_id: id });
+  function handleNavigateToDetail(id: string, isOpen: boolean) {
+    navigation.navigate("Detail", { place_id: id, open_now: isOpen });
   }
 
   return !status ? (
@@ -144,7 +142,12 @@ const Home: React.FC = () => {
                 index <= 9 && (
                   <Marker
                     key={place.id}
-                    onPress={() => handleNavigateToDetail(place.place_id)}
+                    onPress={() =>
+                      handleNavigateToDetail(
+                        place.place_id,
+                        place.opening_hours.open_now
+                      )
+                    }
                     coordinate={{
                       latitude: place.geometry.location.lat,
                       longitude: place.geometry.location.lng,
