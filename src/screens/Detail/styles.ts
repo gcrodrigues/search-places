@@ -49,7 +49,7 @@ export default StyleSheet.create({
   placeWebsite: {
     marginLeft: 20,
   },
-  noWebsite: {
+  noInfo: {
     marginLeft: 20,
     fontStyle: "italic",
     color: "#c9c9c9",

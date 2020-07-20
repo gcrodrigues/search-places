@@ -27,9 +27,10 @@ interface Place {
     };
   };
   name: string;
-  opening_hours: {
+  opening_hours?: {
     open_now: boolean;
   };
+  user_ratings_total: number;
 }
 
 const Home: React.FC = () => {
@@ -85,8 +86,16 @@ const Home: React.FC = () => {
     }, 10000);
   }
 
-  function handleNavigateToDetail(id: string, isOpen: boolean) {
-    navigation.navigate("Detail", { place_id: id, open_now: isOpen });
+  function handleNavigateToDetail(
+    id: string,
+    totalRatings: number,
+    isOpen?: boolean
+  ) {
+    navigation.navigate("Detail", {
+      place_id: id,
+      total_ratings: totalRatings,
+      open_now: isOpen,
+    });
   }
 
   return !status ? (
@@ -142,12 +151,18 @@ const Home: React.FC = () => {
                 index <= 9 && (
                   <Marker
                     key={place.id}
-                    onPress={() =>
-                      handleNavigateToDetail(
-                        place.place_id,
-                        place.opening_hours.open_now
-                      )
-                    }
+                    onPress={() => {
+                      place.opening_hours?.open_now === undefined
+                        ? handleNavigateToDetail(
+                            place.place_id,
+                            place.user_ratings_total
+                          )
+                        : handleNavigateToDetail(
+                            place.place_id,
+                            place.user_ratings_total,
+                            place.opening_hours.open_now
+                          );
+                    }}
                     coordinate={{
                       latitude: place.geometry.location.lat,
                       longitude: place.geometry.location.lng,

@@ -16,15 +16,16 @@ import styles from "./styles";
 
 interface Params {
   place_id: string;
-  open_now: boolean;
+  total_ratings: number;
+  open_now?: boolean;
 }
 
 interface PlaceDetail {
   formatted_address: string;
-  formatted_phone_number: string;
+  formatted_phone_number?: string;
   name: string;
   rating: number;
-  website: string;
+  website?: string;
 }
 
 const Detail: React.FC = () => {
@@ -69,9 +70,11 @@ const Detail: React.FC = () => {
         <RectButton onPress={handleNavigateBack}>
           <Feather name="arrow-left" size={26} color="black" />
         </RectButton>
-        <RectButton onPress={handlePhoneCall}>
-          <Feather name="phone-call" size={26} color="#3c6" />
-        </RectButton>
+        {data.formatted_phone_number && (
+          <RectButton onPress={handlePhoneCall}>
+            <Feather name="phone-call" size={26} color="#3c6" />
+          </RectButton>
+        )}
       </View>
       <View>
         <View style={styles.header}>
@@ -86,6 +89,7 @@ const Detail: React.FC = () => {
               ratingBackgroundColor="#ddd"
               type="custom"
             />
+            <Text>({routeParams.total_ratings})</Text>
           </View>
         </View>
         <View style={styles.placeDetails}>
@@ -103,7 +107,9 @@ const Detail: React.FC = () => {
               <ActivityIndicator style={{ marginLeft: 20 }} />
             ) : (
               <Text style={styles.placePhone}>
-                {data.formatted_phone_number}
+                {data.formatted_phone_number
+                  ? data.formatted_phone_number
+                  : "-"}
               </Text>
             )}
           </View>
@@ -111,10 +117,12 @@ const Detail: React.FC = () => {
             <Feather name="clock" size={22} color="#27f" />
             {loading ? (
               <ActivityIndicator style={{ marginLeft: 20 }} />
+            ) : routeParams.open_now === undefined ? (
+              <Text style={styles.noInfo}>Sem informações</Text>
+            ) : routeParams.open_now ? (
+              <Text style={styles.placeOpen}>Aberto</Text>
             ) : (
-              <Text style={styles.placeOpen}>
-                {routeParams.open_now ? "Aberto" : "Fechado"}
-              </Text>
+              <Text style={styles.placeOpen}>Fechado</Text>
             )}
           </View>
           <View style={styles.placeDetailsCell}>
@@ -129,7 +137,7 @@ const Detail: React.FC = () => {
                 {data.website}
               </Text>
             ) : (
-              <Text style={styles.noWebsite}>Estabelecimento sem site</Text>
+              <Text style={styles.noInfo}>Estabelecimento sem site</Text>
             )}
           </View>
         </View>
