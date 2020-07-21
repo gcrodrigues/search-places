@@ -64,26 +64,33 @@ const Home: React.FC = () => {
     setUserLocation([latitude, longitude]);
   }
 
-  function handlePlacesData() {
+  async function handlePlacesData() {
     setLoading(true);
-    api
-      .get(`nearbysearch/json`, {
+    try {
+      const response = await api.get(`nearbysearch/json`, {
         params: {
           key: API_KEY,
           location: `${userLocation[0]},${userLocation[1]}`,
           rankby: "distance",
           name: queryValue,
         },
-      })
-      .then((res) => {
-        setPlaces(res.data.results);
-        Keyboard.dismiss();
-        setLoading(false);
-        setFlashMessage(true);
       });
-    setTimeout(() => {
-      setFlashMessage(false);
-    }, 10000);
+
+      setPlaces(response.data.results);
+      Keyboard.dismiss();
+      setLoading(false);
+      setFlashMessage(true);
+
+      setTimeout(() => {
+        setFlashMessage(false);
+      }, 10000);
+    } catch (error) {
+      Alert.alert(
+        "Erro!",
+        "Não foi possível obter os dados da Google Places API."
+      );
+      setLoading(false);
+    }
   }
 
   function handleNavigateToDetail(
@@ -116,6 +123,7 @@ const Home: React.FC = () => {
       <View style={styles.contentWrapper}>
         <View style={styles.inputContainer}>
           <TextInput
+            testID="search-input"
             style={styles.input}
             value={queryValue}
             onChangeText={(text) => setQueryValue(text)}
@@ -123,7 +131,11 @@ const Home: React.FC = () => {
             returnKeyType={"search"}
             onSubmitEditing={handlePlacesData}
           />
-          <RectButton style={styles.button} onPress={handlePlacesData}>
+          <RectButton
+            testID="search-button"
+            style={styles.button}
+            onPress={handlePlacesData}
+          >
             {loading ? (
               <ActivityIndicator />
             ) : (

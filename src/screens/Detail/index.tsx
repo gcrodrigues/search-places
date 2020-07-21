@@ -5,6 +5,7 @@ import {
   View,
   Linking,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useRoute, useNavigation } from "@react-navigation/native";
@@ -49,8 +50,12 @@ const Detail: React.FC = () => {
         setData(response.data.result);
         setLoading(false);
       } catch (error) {
-        console.log("Erro! Não foi possível obter os dados da requisição");
+        Alert.alert(
+          "Erro!",
+          "Não foi possível obter os dados da Google Places API."
+        );
         setLoading(false);
+        navigation.goBack();
       }
     }
     fetchPlaceDetails();
