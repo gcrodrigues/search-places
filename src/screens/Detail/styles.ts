@@ -36,18 +36,12 @@ export default StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
-  placeAddress: {
-    marginLeft: 20,
-  },
-  placePhone: {
+  placeInfo: {
     marginLeft: 20,
   },
   placeOpen: {
     marginLeft: 20,
     fontWeight: "bold",
-  },
-  placeWebsite: {
-    marginLeft: 20,
   },
   noInfo: {
     marginLeft: 20,
