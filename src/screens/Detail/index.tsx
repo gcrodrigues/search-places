@@ -98,7 +98,7 @@ const Detail: React.FC = () => {
             {loading ? (
               <ActivityIndicator style={{ marginLeft: 20 }} />
             ) : (
-              <Text style={styles.placeAddress}>{data.formatted_address}</Text>
+              <Text style={styles.placeInfo}>{data.formatted_address}</Text>
             )}
           </View>
           <View style={styles.placeDetailsCell}>
@@ -106,7 +106,7 @@ const Detail: React.FC = () => {
             {loading ? (
               <ActivityIndicator style={{ marginLeft: 20 }} />
             ) : (
-              <Text style={styles.placePhone}>
+              <Text style={styles.placeInfo}>
                 {data.formatted_phone_number
                   ? data.formatted_phone_number
                   : "-"}
@@ -131,7 +131,7 @@ const Detail: React.FC = () => {
               <ActivityIndicator style={{ marginLeft: 20 }} />
             ) : data.website ? (
               <Text
-                style={styles.placeWebsite}
+                style={styles.placeInfo}
                 onPress={() => Linking.openURL(`${data.website}`)}
               >
                 {data.website}
